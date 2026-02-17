@@ -1,12 +1,13 @@
 import joblib
 import numpy as np
+from typing import List
 
 saved_model = joblib.load("model.joblib") 
 print("Model Loaded successfully")
 
 
 
-def make_preditcion(data:dict) -> float:
+def make_prediction(data:dict) -> float:
     features = np.array([
         [
             data['longitude'],
@@ -22,3 +23,20 @@ def make_preditcion(data:dict) -> float:
     ])
 
     return saved_model.predict(features)[0]
+
+
+def make_batch_prediction(data:List[dict]) -> np.array:
+        X = np.array([
+        [
+            x['longitude'],
+            x['latitude'],
+            x['housing_median_age'],
+            x['total_rooms'],
+            x['total_bedrooms'],
+            x['population'],
+            x['household'],
+            x['median_income']
+
+        ] for x in data
+    ])
+        return saved_model.predict(X)
